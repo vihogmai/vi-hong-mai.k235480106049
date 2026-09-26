@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: web_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./html:/var/www/html
+    depends_on:
+      - nodered
+
+  nodered:
+    image: nodered/node-red:latest
+    container_name: web_nodered
+    ports:
+      - "1880:1880"
+    volumes:
+      - nodered_data:/data
+
+  mariadb:
+    image: mariadb:10.11
+    container_name: web_mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: web_db
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: web_phpmyadmin
+    environment:
+      PMA_HOST: mariadb
+    ports:
+      - "8080:8080"
+
+volumes:
+  nodered_data:

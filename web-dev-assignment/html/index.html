@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Bài tập Lập trình Web</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        table { border-collapse: collapse; width: 300px; margin-top: 15px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #007bff; color: white; }
+        button { padding: 8px 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Danh sách sinh viên (Node-RED API)</h2>
+    <button onclick="getData()">Tải danh sách</button>
+    
+    <table id="tbl" style="display:none;">
+        <thead>
+            <tr><th>Tên</th><th>Số tiền</th></tr>
+        </thead>
+        <tbody id="body"></tbody>
+    </table>
+
+    <script>
+        async function getData() {
+            const res = await fetch('/api/tacke');
+            const data = await res.json();
+            const tbody = document.getElementById('body');
+            tbody.innerHTML = '';
+            data.dssv.forEach(sv => {
+                tbody.innerHTML += `<tr><td>${sv.name}</td><td>${sv.money}k</td></tr>`;
+            });
+            document.getElementById('tbl').style.display = 'table';
+        }
+    </script>
+</body>
+</html>
